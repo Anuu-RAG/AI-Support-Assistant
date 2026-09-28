@@ -2,8 +2,6 @@
 
 A production-minded, **WordPress-native customer support platform** combining custom PHP/WordPress database architecture, deterministic workload management, OpenAI-powered AI intelligence, modern sleek UI design, and frontend customer interaction channels.
 
-> **Portfolio Project Note**: Built as a native WordPress plugin using PHP, MySQL, Vanilla CSS (modern design system), and the official OpenAI API. Demonstrates standard WordPress plugin engineering, security practices, and practical AI application design without requiring external Python, Node.js, or FastAPI server dependencies.
-
 ---
 
 ## 🏗️ Architecture Overview
