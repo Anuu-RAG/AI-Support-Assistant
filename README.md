@@ -252,7 +252,3 @@ ai-support-assistant/
 - **Agent Analytics Dashboard**: Visual metrics for resolution time, customer sentiment trends, and department workloads.
 
 ---
-
-## 📝 Resume / CV Summary
-
-> **WordPress & AI Engineering Project**: Architected and built **AI Support Assistant**, a full-stack WordPress customer support platform featuring a customer-facing portal shortcode (`[ai_support_tickets]`), an interactive floating AJAX support desk widget with a modern SaaS aesthetic (Inter typography, glassmorphism headers, micro-animations), custom MySQL tables, PHP business logic, and OpenAI API integration. Implemented workload-based agent auto-assignment, server-side validated AI ticket classification, real-time AJAX message polling, native `wp_mail()` notifications, and human-in-the-loop AI reply draft generation with full WordPress Settings API security.
