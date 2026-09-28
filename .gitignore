@@ -1,0 +1,29 @@
+# Secrets & Local Configuration
+.env
+*.env
+*.secret
+*.log
+
+# IDE / Editor Files
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosv
+*.sln.docstates
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary & Swap Files
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+# Dependencies (if added later)
+vendor/
+node_modules/
