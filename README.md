@@ -31,6 +31,7 @@ flowchart TD
     
     ReplyDraft -->|Transient Storage| HumanReview[Human Agent Review & Edit]
     HumanReview -->|Explicit Approval & Send| DB
+    HumanReview -->|Trigger Email Alert| Email[wp_mail Email Engine]
 ```
 
 ### Key Architectural Separation
@@ -49,15 +50,21 @@ flowchart TD
 - **Styled Form Controls**: Custom rounded inputs (`border-radius: 10px`) with off-white backgrounds and vibrant focus glow outlines (`box-shadow: 0 0 0 3.5px rgba(99, 102, 241, 0.15)`).
 - **Status Pills**: Styled color-coded status badges (`Open` emerald, `Pending` amber, `Closed` slate).
 
-### 💻 Customer Frontend Channels
-- **Option A: Customer Support Portal Shortcode (`[ai_support_tickets]`)**: Embed a full customer support dashboard onto any page or post. Customers can create tickets, track open ticket statuses, view conversation timelines, and send customer replies.
-- **Option B: Floating Support Desk Widget**: Displays an interactive floating support button on the bottom corner (`bottom-right` or `bottom-left`) of the website, allowing instant AJAX ticket submission with real-time feedback.
+### 💻 Customer Frontend Channels & Auto-Provisioning
+- **Option A: Customer Support Portal Shortcode (`[ai_support_tickets]`)**: Embed a full customer support dashboard onto any page or post. Customers can create tickets, track open ticket statuses, view conversation timelines, and send replies.
+- **Option B: Floating Support Desk Widget**: Displays an interactive floating support button on the bottom corner (`bottom-right` or `bottom-left`) of the website for instant AJAX ticket submission.
+- **Auto-Created Support Desk Page**: Automatically detects or programmatically creates a published WordPress page titled *"Support Desk"* containing `[ai_support_tickets]` upon plugin setup.
+- **In-Place Confirmation & Success Link**: Ticket submission renders a clean confirmation card featuring a direct link to **[Support Desk]** for progress tracking without abrupt page reloads.
+- **Real-Time AJAX Polling**: Single ticket view automatically polls (`setInterval` every 3 seconds) for new agent responses, dynamically rendering message bubbles in real-time.
 
 ### 🎫 Ticket Management
 - Custom database tables (`wp_ai_support_tickets`, `wp_ai_support_messages`).
 - Ticket lifecycle states: `open`, `in_progress`, `pending`, `resolved`, `closed`.
 - Workload-aware state transitions (closing decrements agent active tickets; reopening increments active tickets).
 - Priority levels (`low`, `medium`, `high`, `urgent`) and categorizations.
+
+### 📧 Email Notifications
+- Native `wp_mail()` email notification dispatch to customers when a support agent posts a reply on their ticket.
 
 ### 👥 Agent & Department Management
 - Support departments (`Technical`, `Billing`, `Shipping`, `Returns`, `General`).
@@ -177,7 +184,7 @@ CREATE TABLE wp_ai_support_agents (
 1. **Download / Clone** the repository into your WordPress plugins folder:
    ```bash
    cd wp-content/plugins/
-   git clone https://github.com/your-username/ai-support-assistant.git
+   git clone https://github.com/Anuu-RAG/AI-Support-Assistant.git
    ```
 2. **Activate Plugin**: Go to **WordPress Admin → Plugins** and activate **AI Support Assistant**.
 3. **Configure API & Frontend**:
@@ -186,9 +193,9 @@ CREATE TABLE wp_ai_support_agents (
    - Check **Enable AI System**, **Enable Customer Portal Shortcode**, and **Enable Floating Support Desk Widget**.
    - Click **Save Changes**.
    - Click **⚡ Test AI Connection** to verify connection.
-4. **Embed Customer Portal (Option A)**:
-   - Create a page in WordPress named "Support Desk".
-   - Insert the shortcode `[ai_support_tickets]`.
+4. **Support Desk Page**:
+   - The plugin automatically creates and publishes a page named **"Support Desk"** with shortcode `[ai_support_tickets]`.
+   - Alternatively, insert `[ai_support_tickets]` on any custom page or post.
 5. **Set Up Agents & Departments**:
    - Go to **AI Support → Agents**.
    - Verify default departments (`Technical`, `Billing`, `Shipping`, `Returns`, `General`) or add custom ones.
@@ -221,7 +228,7 @@ ai-support-assistant/
 │   ├── class-database.php         # DB table creation & dbDelta migration
 │   ├── class-settings.php         # WordPress Settings API & configuration accessors
 │   ├── class-ai.php               # OpenAI API HTTP service layer & logging
-│   ├── class-ai-classifier.php    # AI Ticket Classifier & server validation
+│   ├── class-classifier.php       # AI Ticket Classifier & server validation
 │   ├── class-ai-reply.php         # AI Reply Draft Generator & transient store
 │   ├── class-frontend.php         # Customer Portal shortcode & Floating Widget engine with modern UI
 │   ├── class-tickets.php          # Ticket lifecycle & workload state transitions
@@ -242,11 +249,10 @@ ai-support-assistant/
 
 - **WooCommerce Integration**: Fetch customer order history, shipping status, and line items to inject real order context into AI prompts.
 - **Support Knowledge Base (RAG)**: WordPress Custom Post Type for support policies with semantic text retrieval.
-- **Email Notifications**: Native `wp_mail()` notifications for ticket assignment and customer replies.
+- **Agent Analytics Dashboard**: Visual metrics for resolution time, customer sentiment trends, and department workloads.
 
 ---
 
 ## 📝 Resume / CV Summary
 
-> **WordPress & AI Engineering Project**: Architected and built **AI Support Assistant**, a full-stack WordPress customer support platform featuring a customer-facing portal shortcode (`[ai_support_tickets]`), an interactive floating AJAX support desk widget with a modern SaaS aesthetic (Inter typography, glassmorphism headers, micro-animations), custom MySQL tables, PHP business logic, and OpenAI API integration. Implemented workload-based agent auto-assignment, server-side validated AI ticket classification, and human-in-the-loop AI reply draft generation with full WordPress Settings API security.
-#
+> **WordPress & AI Engineering Project**: Architected and built **AI Support Assistant**, a full-stack WordPress customer support platform featuring a customer-facing portal shortcode (`[ai_support_tickets]`), an interactive floating AJAX support desk widget with a modern SaaS aesthetic (Inter typography, glassmorphism headers, micro-animations), custom MySQL tables, PHP business logic, and OpenAI API integration. Implemented workload-based agent auto-assignment, server-side validated AI ticket classification, real-time AJAX message polling, native `wp_mail()` notifications, and human-in-the-loop AI reply draft generation with full WordPress Settings API security.
